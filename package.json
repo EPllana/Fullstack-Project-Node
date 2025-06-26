@@ -1,0 +1,16 @@
+{
+  "name": "projekt-real",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "projekti",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "ernis",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.16.1"
+  }
+}
