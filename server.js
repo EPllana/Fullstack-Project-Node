@@ -1,15 +1,20 @@
 import  express  from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { timeStamp } from "console";
-import { connect } from "http2";
 import connectDatabase from "./config/database.js";
+import apiRoutes from "./routes/routes.js";
 
 dotenv.config();// e lexon dotenv 
 //process.env.port // PER ME LEXU psh 
 
 const app = express();
-// portin ne env 
+
+app.use(express.json());
+
+
+
+app.use("/api", apiRoutes);// e kemi lidh me routes.js
+
 
 app.use(cors("*"));// e lojm yllin mi jep qasje krejt 
 app.use(express.json())// mibo pasrse datata qe vin prej request 
@@ -19,10 +24,13 @@ app.get("/api/health", (req, res)=>{//endpoint qe o tu funksionu
         timestamp:new Date().toISOString(),
     })
 }) 
+// portin ne env  per me lexu 
+
+
 
 const PORT = process.env.PORT;
 
-const startServer = async() =>{// async se mrr koh me u elxu qata
+const startServer = async() =>{// async se mrr koh me u lexu qata e lejon mu ekzekutu pjest tjera se kjo mundet memarr koh a await pret deri t ekezekutohet blloku i ti 
 
     try{// ktu e thirrim mongo db permi app.listen nuk starton nese nuk connektohet me mongodb anej funksionon ekem async knej e bojm me await
        await  connectDatabase();
@@ -37,3 +45,5 @@ const startServer = async() =>{// async se mrr koh me u elxu qata
 };
 
 startServer();
+
+
