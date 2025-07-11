@@ -28,12 +28,38 @@ export const createUser = async (req, res) => {
 
 export const getAllUsers = async (req, res)=>{
   try{
-    const users = await  User.find().select("-password").sort({createdAt:-1});// kur kemi me marr seene prej databases mja kthy me await  te sort i sortojm mja nis prej numrit 
-    res.status(200).json({
-      data:users,
-      length:users.length,
-    });
+    const search = req.query.search //qkado qe tbojm n query prej frontit vjen string edhe boolean numrat vin string kshtu qe duhet tek page duhet me konvertu n numer
 
+    const page = parseInt(req.query.page) || 1 // ktu e bojm pagination ne cilen flet jem  sa duhet me i skip per me i mar 10 userat e 1 10 te dytyiy-paese int e kthen ne numer 
+    const limit = parseInt(req.query.limit) || 10  // nese ska bo provide useri me i marr 10
+
+    const skip = (page - 1) * limit;// nse ejem fleten e 2 2-1  skipi i shton 10 t part  nese jena fleten e 2 skipi 10 t paret nese jena n fleten e 3 skipi 10 te  dytit ? 
+
+    let filter = {};//empty object {} ktu jem tu e bo search
+
+    if(search){// nese filteri eka dergu search\
+      filter.$or = [
+        { firstName: { $regex: search, $options: "i" } }, //array per meshum field me filtru
+          {lastName:{$regex:search, $options: "i"}},
+          {email: {$regex:search, $options:"i"}}]
+     /* filter = {
+      firstName:{
+        $regex: search,
+        $options: "i"
+      }//duhet me perdor regular expressions per search  $option:"i" perdoret kur n search kerkojm se kqyr a o shkronja e madhe apo e vogel 
+    }*/
+  }
+
+    const users = await  User.find(filter).select("-password").sort({createdAt:-1}).limit(limit).skip(skip);// kur kemi me marr seene prej databases mja kthy me await  te sort i sortojm mja nis prej numrit 
+    const totalDocuments = await User.countDocuments(filter)
+    res.status(200).json({
+      length:users.length,
+      data:users,
+      totalDocuments: totalDocuments
+    });
+// ne postman e bojm me ? per query  
+// kur sedim sa page kem me i bo me i nimu frotntit per pagination ja dergojm nr total t userave  dhe sa e bon aj limitin per 10 vet ne faqe apo sa 
+//per me kalkulu n front sa fletakan me ieshfaq me count document
   }catch(error){
     res.status(500).json({message:"server errorrrrii", error:error})
   }
