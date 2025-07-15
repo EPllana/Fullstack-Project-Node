@@ -31,11 +31,11 @@ export const getAllUsers = async (req, res)=>{
     const search = req.query.search //qkado qe tbojm n query prej frontit vjen string edhe boolean numrat vin string kshtu qe duhet tek page duhet me konvertu n numer
 
     const page = parseInt(req.query.page) || 1 // ktu e bojm pagination ne cilen flet jem  sa duhet me i skip per me i mar 10 userat e 1 10 te dytyiy-paese int e kthen ne numer 
-    const limit = parseInt(req.query.limit) || 10  // nese ska bo provide useri me i marr 10
+    const limit = parseInt(req.query.limit) || 10  // nese ska bo provide useri me i marr d
 
     const skip = (page - 1) * limit;// nse ejem fleten e 2 2-1  skipi i shton 10 t part  nese jena fleten e 2 skipi 10 t paret nese jena n fleten e 3 skipi 10 te  dytit ? 
 
-    let filter = {};//empty object {} ktu jem tu e bo search
+    let filter = {isActive:true};//empty object {} ktu jem tu e bo search
 
     if(search){// nese filteri eka dergu search\
       filter.$or = [
@@ -107,10 +107,11 @@ export const updateUser = async (req, res)=>{
 export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id; 
-    const user = await User.findByIdAndDelete(userId);
+    const user = await User.findByIdAndUpdate(userId, {isActive: false});
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+
     }
 
     res.status(200).json({ message: "User u fshi me sukses" });
@@ -118,3 +119,30 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+export const changePassword  = async(req, res)=>{
+  try{
+    const userId = req.params.id;
+    const {oldPassword,newPassword} = req.body;
+
+    if(!oldPassword || !newPassword){return res.status(400).json({message:"Old Password And New Password Required"})}
+
+    const user = await User.findById(userId)
+
+    if(!user){ return res.status(400).json({message:"User doesnt exist"})}
+
+    const isOldPasswordVlaid = await bcrypt.compare(oldPassword, user.password)
+    if(!isOldPasswordVlaid){return res.status(400).json({message:"Old Password Not Validd"})}
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+    user.password = hashedPassword;
+
+    await user.save();
+    res.status(200).json({message:"Password Changed Succefully"})
+    
+
+
+  }catch(error){
+  res.status(500).json({message:"Serveri Deshtoi", error})
+
+  }
+}

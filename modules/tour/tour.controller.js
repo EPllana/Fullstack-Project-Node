@@ -43,7 +43,6 @@ export const getTour = async (req ,res)=>{
     if(country){
       filter.country = country;
     }
-
     if(city){
       filter.city = city;
     }
@@ -56,8 +55,6 @@ export const getTour = async (req ,res)=>{
 
     }
     //detyr averagerating me bo me filter 
-
-   
       const skip = (page-1)*limit // formila per me kalkulu skipin 
         const tours = await Tour.find(filter).skip(skip).limit(limit);// me - nuk i merr//selectin kur dojm mi thirr kon dojm---/-1 i thirr t fundit qe jon kriju i qet tparat.select("-password shembull")
         const totalDocuments = await Tour.countDocuments(filter)
@@ -77,7 +74,7 @@ export const getTour = async (req ,res)=>{
 export const getOneTour = async (req, res) => {
   try {
     const tourId = req.params.id;
-    console.log("Requested tour ID:", tourId); // 👈 kjo ndihmon
+    console.log("Requested tour ID:", tourId); 
     const tour = await Tour.findById(tourId).populate(
       "createdBy", "firstName lastName"
     );
