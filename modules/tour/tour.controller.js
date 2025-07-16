@@ -26,7 +26,7 @@ export const createTour = async (req, res) => {
 
 export const getTour = async (req ,res)=>{
     try{
-      const {search, country, city ,sortBy} = req.query; //ktu i kem filterat qa kem em filtru  qkado qe vendosim ne postman mbas ? esht query 
+      const {search, country, city ,sortBy} = req.query; //ktu i kem filterat qa kem em filtru  qkado qe vendosim ne postman mbas ? esht query queryt veq frontit vin params prej routes 
       const page = parseInt(req.query.page) || 1;
       const limit = parseInt(req.query.limit) || 10;
 

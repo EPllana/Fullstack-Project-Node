@@ -16,20 +16,20 @@ const transporter = nodemailer.createTransport({
 export const sendWelcomeEmail = async (toEmail, name) => {
   try {
     const info = await transporter.sendMail({
-      from: `"Travel APP" <${process.env.EMAIL_USER}>`, // emri dhe emaili i dërguesit
-      to: toEmail, // marrësi
-      subject: "Welcome To Our Travel App", // subjekti
+      from: `"Travel APP" <${process.env.EMAIL_USER}>`,
+      to: toEmail,
+      subject: "Welcome To Our Travel App",
       html: `
         <h2>Hi, ${name}</h2>
         <p>Welcome aboard!</p>
-        <p> Let un know if you need anything</p>
+        <p>Let us know if you need anything</p>
         <br>
-        <strong> -n Travel app team ,/strong>,
-      `, // përmbajtja e emailit (HTML)
+        <strong> Travel App Team</strong> `,
     });
 
     console.log("Email sent: " + info.messageId);
   } catch (error) {
-    console.error("Failed to send email:", error);
+    console.error("❌ Failed to send email:", error.message); // shto log të qartë
   }
 };
+

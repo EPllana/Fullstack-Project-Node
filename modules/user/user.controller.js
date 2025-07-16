@@ -1,5 +1,6 @@
 import User from "./user.model.js";
 import bcrypt from "bcrypt";
+import { sendWelcomeEmail } from "../../config/email.js";
 
 export const createUser = async (req, res) => {
   try {
@@ -19,8 +20,8 @@ export const createUser = async (req, res) => {
       phoneNumber, // Kujdes që emri i fushës të jetë i njëjtë me atë në model
     });
     await user.save();    // Ruajmë user-in në databazë (MongoDB)
-
-    res.status(201).json({message:"useri u krijua me sukses",});
+    await sendWelcomeEmail(user.email, user.firstName);
+    res.status(201).json({message:"useri u krijua me sukses kontrollo email ",});
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -35,7 +36,8 @@ export const getAllUsers = async (req, res)=>{
 
     const skip = (page - 1) * limit;// nse ejem fleten e 2 2-1  skipi i shton 10 t part  nese jena fleten e 2 skipi 10 t paret nese jena n fleten e 3 skipi 10 te  dytit ? 
 
-    let filter = {isActive:true};//empty object {} ktu jem tu e bo search
+    let filter = {isActive:true};//empty object {} ktu jem tu e bo search 
+    //aktive tru sna vjen niher see ekan undefinded
 
     if(search){// nese filteri eka dergu search\
       filter.$or = [
@@ -121,21 +123,28 @@ export const deleteUser = async (req, res) => {
 };
 export const changePassword  = async(req, res)=>{
   try{
+    //marrim params id 
     const userId = req.params.id;
     const {oldPassword,newPassword} = req.body;
 
+    //kontrollojm nese jan old pass word dhe new nese sjtan e kthejm nje status qe duhet t jen
     if(!oldPassword || !newPassword){return res.status(400).json({message:"Old Password And New Password Required"})}
 
+    // megjet userin me id 
     const user = await User.findById(userId)
-
     if(!user){ return res.status(400).json({message:"User doesnt exist"})}
 
+    //e bejm compare passin e vjeter me t riun 
     const isOldPasswordVlaid = await bcrypt.compare(oldPassword, user.password)
+
+    // nese nuk ekziston pasi i vjeter smundet me shtu triun 
     if(!isOldPasswordVlaid){return res.status(400).json({message:"Old Password Not Validd"})}
 
+
+     // bejm hashimin e passwordit t ri 
     const hashedPassword = await bcrypt.hash(newPassword, 10)
     user.password = hashedPassword;
-
+   //e rujm userin ne dtb 
     await user.save();
     res.status(200).json({message:"Password Changed Succefully"})
     
@@ -146,3 +155,5 @@ export const changePassword  = async(req, res)=>{
 
   }
 }
+
+
