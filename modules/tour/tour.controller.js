@@ -125,3 +125,99 @@ export const updateTour = async (req ,res)=>{
       }
     };
   
+    export const getTourstats = async (req, res) => {
+      try {
+        // Merr numrin total të tureve që janë aktive
+        const totalTour = await Tour.countDocuments({ isActive: true });
+    
+        // Merr statistika të çmimeve për turet aktive
+        const priceStats = await Tour.aggregate([
+          { $match: { isActive: true } }, // filtro vetëm turet aktive
+          {
+            $group: { // grumbullo të gjitha të dhënat në një grup të vetëm
+              _id: null,
+              avgPrice: { $avg: "$price" },     // mesatarja e çmimeve e kthen si numer me $ price kurse pa $ e kthen si  string
+              minPrice: { $min: "$price" },     // çmimi minimal
+              maxPrice: { $max: "$price" },     // çmimi maksimal
+              totalRevenue: { $sum: "$price" }  // shuma totale e të gjitha çmimeve
+            }
+          }
+        ]);
+    
+        const  toursByCountry = await Tour.aggregate([
+          { $match: { isActive :true } },
+          { $group : { _id:"$country", // i grupon rejt nga country 
+            count: { $sum: 1 }, // posht e gjojm qmimin mesatar ne vende sa esht 
+            avgPrice: { $avg: "$price" }        
+          }}
+        ]);
+    
+        const ratingStats =  await Tour.aggregate([
+          { $match: { isActive: true } },
+          { $group: {
+            _id: null, // me null nuk i grupon nga asgje vetem i merr krejt qka ka 
+            avgRating: { $avg: "$averageRating" },
+            minRating: { $min: "$averageRating" },
+            maxRating: { $max: "$averageRating" }
+          }}
+        ]);// me gjet rating ma t madh 
+        
+    
+        res.status(200).json({
+          totalTour: totalTour,
+          priceStats: priceStats[0] || {
+            avgPrice:0,
+            minPrice:0, 
+            maxPrice:0,
+            totalRevenue:0 },// nese smundet me i gjet kto satistika me kthy 0 
+    
+          ratingStats : ratingStats[0] || {
+            avgRating:0,
+            minRating:0, 
+            maxRating:0,
+          },
+    
+          toursByCountry: toursByCountry, // sebojm akses me 0 se e kem id null nalt agregate gjithmon e kthen 1 array 
+    
+        })
+      } catch(error) {
+        res.status(500).json({message:"Server Error" , error})
+      }
+    }
+    
+// aggregate zakonisht i then ton kohen rezulatatet ne form te arrayt 
+
+
+export const addReview = async (req, res)=>{
+  try{
+    const  tourId = req.params.tourId // kta e kemi tek route 
+    const userId = req.body.user;    // ta e marrim nga body i postman 
+     const comment = req.body.comment
+     const rating = req.body.rating
+
+     const tour = await Tour.findById(tourId);
+     if(!tour){ return res.status(404).json({message:"Nuk ekzison"})}
+
+     // e bojm 1 user me shtu vetem 1 review  jo mashum tour.reviews ekem si array ne model reviews
+     const existingReview = tour.reviews.find(// masi jemi tu iteru me array e perdorim ket metod te js  kjo rev esht shkur revies
+      (rev)=> rev.user.toString() === userId 
+     );
+      if(existingReview){
+        return res.status(400).json({message:"Review Exists Could Not Add More Reviews"})
+      } 
+
+      const newReview = {
+        user:user,
+        comment:comment,
+        rating:rating,
+      }
+      tour.reviews.push(newReview);  //reviews e kem si array ne schema
+      await tour.save();
+      res.status(201).json({message:"Review Addeded Succefully", tour})
+
+
+  }catch(error){
+    res.status(500).json({message:"Server Error", error})
+
+  }
+}
