@@ -1,0 +1,10 @@
+import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
+
+
+export const login = async (req, res)=>{
+    try{
+        const {name,surname,email,password}=req.body
+    }
+}
