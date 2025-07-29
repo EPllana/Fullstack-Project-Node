@@ -192,6 +192,7 @@ export const updateTour = async (req ,res)=>{
 
 export const addReview = async (req, res) => {
   try {
+    console.log("Request Body:", req.body);  // Shiko të dhënat që po merrni
 
     const tourId = req.params.tourId;
     const userId = req.body.user;
@@ -265,4 +266,3 @@ export const addReview = async (req, res)=>{
 
   }
 }
-*/

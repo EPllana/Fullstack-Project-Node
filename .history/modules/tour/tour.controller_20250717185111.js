@@ -188,50 +188,6 @@ export const updateTour = async (req ,res)=>{
 // aggregate zakonisht i then ton kohen rezulatatet ne form te arrayt 
 
 
-
-
-export const addReview = async (req, res) => {
-  try {
-
-    const tourId = req.params.tourId;
-    const userId = req.body.user;
-    const comment = req.body.comment;
-    const rating = req.body.rating;
-
-    // Gjejmë turin
-    const tour = await Tour.findById(tourId);
-    if (!tour) {
-      return res.status(404).json({ message: "Tour not found" });
-    }
-
-    // Kontrollojmë nëse përdoruesi ka bërë tashmë review
-    const existingReview = tour.reviews.find(
-      (rev) => rev.user.toString() === userId.toString()
-    );
-    if (existingReview) {
-      return res.status(400).json({ message: "Review already exists for this user" });
-    }
-
-    // Krijojmë një review të ri
-    const newReview = {
-      user: userId,
-      comment,
-      rating,
-    };
-
-    // Shtojmë review-n në listën e reviews
-    tour.reviews.push(newReview);
-
-    // Ruajmë turin dhe përditësojmë
-    await tour.save();
-    res.status(201).json({ message: "Review added successfully", tour });
-  } catch (error) {
-    console.error("Error during review addition:", error);  // Shtoni log për gabimin
-    res.status(500).json({ message: "Server Error", error: error.message });
-  }
-};
-
-/*
 export const addReview = async (req, res)=>{
   try{
     const  tourId = req.params.tourId // kta e kemi tek route 
@@ -265,4 +221,3 @@ export const addReview = async (req, res)=>{
 
   }
 }
-*/
