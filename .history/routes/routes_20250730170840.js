@@ -1,8 +1,7 @@
 import express from "express";
 import userRoutes from"../modules/user/user.routes.js";
-import tourRoutes from"../modules/tour/tour.routes.js";
-import authRoutes from "../modules/auth/auth.routes.js";
-//import bookingRoutes from "../modules/booking/booking.routes.js";
+import tourRoutes from"../modules/tour/tour.routes.js"
+import authRoutes from "../modules/auth/auth.routes.js"
 
 const router = express.Router();
 
@@ -11,7 +10,7 @@ const router = express.Router();
 router.use("/users", userRoutes)// ktu e merr prefiksin users kurse api e ka ne server ktu e merr users 
 router.use("/tours", tourRoutes);
 router.use("/auth", authRoutes);
-//router.use("/booking", bookingRoutes)
+router.use("/auth", bookingRoutes)
 
 
 export default router;

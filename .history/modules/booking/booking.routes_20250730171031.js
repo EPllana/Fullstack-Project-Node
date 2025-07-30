@@ -1,11 +1,9 @@
-/*
 import express from "express";
 
 const router = express.Router();
 
 
-router.post("/", createBooking)
+router.post("/", creat)
 
 
 export default router;
-*/

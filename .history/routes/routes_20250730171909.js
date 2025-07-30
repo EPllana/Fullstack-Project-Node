@@ -1,8 +1,8 @@
 import express from "express";
 import userRoutes from"../modules/user/user.routes.js";
 import tourRoutes from"../modules/tour/tour.routes.js";
-import authRoutes from "../modules/auth/auth.routes.js";
-//import bookingRoutes from "../modules/booking/booking.routes.js";
+import authRoutes from "../modules/auth/auth.routes.js";//
+import bookingRoutes from "../modules/booking/booking.routes.js";
 
 const router = express.Router();
 

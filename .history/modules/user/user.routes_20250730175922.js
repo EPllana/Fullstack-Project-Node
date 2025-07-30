@@ -1,5 +1,5 @@
 import express from "express";
-import { createUser,getAllUsers,getOneUser,updateUser,deleteUser,changePassword,deleteMe,updateMe,getMe } from "../user/user.controller.js";///addReview// e shtojm me import 
+import { createUser,getAllUsers,getOneUser,updateUser,deleteUser,changePassword,deleteMe,updateMe } from "../user/user.controller.js";///addReview// e shtojm me import 
 import { isAuthenticated, authorize } from "../../middlewares/auth.middleware.js"
 
 

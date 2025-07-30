@@ -67,7 +67,6 @@ export const getAllUsers = async (req, res)=>{
   }
 };
 
-//=====================================================getOneUser========================================================///
 
 export const getOneUser = async(req,res)=>{
   try{
@@ -82,26 +81,6 @@ export const getOneUser = async(req,res)=>{
     res.status(500).json({messae:"serveri error", error})
   }
 };
-
-
-//=====================================================getMe========================================================///
-
-export const getMe = async(req,res)=>{
-  try{
-      const userId = req.user._id;
-      const user =await User.findById(userId).select("-password")
-      if(!user){
-          return res.status(404).json({message:"User not found"});
-      }
-      res.status(200).json(user)
-
-  }catch(error){
-    res.status(500).json({messae:"serveri error", error})
-  }
-};
-
-
-//=====================================================updateUser========================================================///
 
 export const updateUser = async (req, res)=>{
   try{
@@ -133,8 +112,7 @@ export const updateUser = async (req, res)=>{
   export const updateMe = async (req, res)=>{
     try{
      // const {id}=req.params;
-    // const userId = req.params.id;
-    const userId = req.user._id; 
+     const userId = req.params.id;
      const {firstName,lastName,email,phoneNumber,role}=req.body;
      const user = await User.findById(userId);
      if (!user){
@@ -172,7 +150,6 @@ export const deleteUser = async (req, res) => {
 };
 
 
-//=====================================================deleteMe========================================================///
 
 export const deleteMe = async (req, res) => {
   try {
@@ -189,11 +166,6 @@ export const deleteMe = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
-
-
-
-//=====================================================changePassword========================================================///
-
 export const changePassword  = async(req, res)=>{
   try{
     //marrim params id 
