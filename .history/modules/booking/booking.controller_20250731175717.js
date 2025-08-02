@@ -17,7 +17,7 @@ export const createBooking = async (req, res) => {
       return res.status(404).json({ message: "Tour not founds" });
     }
 
-    const totalPrice = tour.price * guests;// me shiku edhe sa dit eka rezeru * days   
+    const totalPrice = tour.price * guests;  
     
     const newBooking = new Booking({
       user: userId,
@@ -25,8 +25,6 @@ export const createBooking = async (req, res) => {
       guests: guests,
       totalPrice: totalPrice,
       bookingDate: new Date(),
-      endDate,
-      startDate
     });
 
 

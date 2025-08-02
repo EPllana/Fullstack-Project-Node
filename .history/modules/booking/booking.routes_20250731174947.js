@@ -8,7 +8,7 @@ const router = express.Router();
 //updateStatus
 //stats me nxjerr satistikat per shitje
 
-router.post("/:tourId",isAuthenticated, createBooking)
+router.post("/:",isAuthenticated, createBooking)
 
 router.get("/",isAuthenticated, getAllBookings)
 

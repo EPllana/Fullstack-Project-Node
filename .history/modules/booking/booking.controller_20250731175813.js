@@ -25,8 +25,6 @@ export const createBooking = async (req, res) => {
       guests: guests,
       totalPrice: totalPrice,
       bookingDate: new Date(),
-      endDate,
-      startDate
     });
 
 

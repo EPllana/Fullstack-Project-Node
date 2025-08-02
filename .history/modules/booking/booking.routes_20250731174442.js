@@ -1,20 +1,19 @@
 import express from "express";
 import { createBooking,getAllBookings,updateBookings,deleteBookings} from "./booking.controller.js";
-import { isAuthenticated , authorize} from "../../middlewares/auth.middleware.js";
+import { isAuthenticated } from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 //mebo getmy bookings endpoint
 //mrbo ni booking cancel booking
 //updateStatus
-//stats me nxjerr satistikat per shitje
 
-router.post("/:tourId",isAuthenticated, createBooking)
+router.post("/",isAuthenticated, createBooking)
 
 router.get("/",isAuthenticated, getAllBookings)
 
-router.put("/:id",isAuthenticated,authorize, updateBookings)
+router.put("/:id",isAuthenticated, updateBookings)
 
-router.delete("/:id",isAuthenticated, authorize ,deleteBookings)
+router.delete("/:id",isAuthenticated, deleteBookings)
 
 
 

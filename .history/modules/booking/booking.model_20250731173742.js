@@ -40,7 +40,7 @@ const bookingSchema = new mongoose.Schema({
         enum: ["pending", "confirmed", "completed", "canceled"],
         default: "pending",  
     },
-    startDate:{// kta me bo nshpi me i kalkulu per sa dit eka rezervu tamon numer 
+    startDate:{
         type:Date,
         required:true
     },

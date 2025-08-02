@@ -14,7 +14,7 @@ router.post("/", createUser)
 //router.put("/")
 //router.delete("/")
 router.get("/", isAuthenticated , authorize(['admin', 'moderator']), getAllUsers)// next e perdorim se isauthenticated esht nmes per at arsye authorize ebojm array mju jep qasje adminit dhe moderatorit
-router.get("/getMe", isAuthenticated, authorize(['admin', 'moderator','user']), getMe);
+router.get("/getMe", isAuthenticated, authorize(['admin', 'moderator','']), getMe);
 router.get("/:id", isAuthenticated, authorize(['admin', 'moderator']), getOneUser);// me bo get me ne shpi n ven t id me bo nven req.params ,id mebo req.user.id per me pa profilin ton me get me 
 
 router.put("/updateMe",isAuthenticated,authorize(['admin', 'moderator',"user"]), updateMe);

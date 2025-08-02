@@ -19,14 +19,12 @@ export const createBooking = async (req, res) => {
 
     const totalPrice = tour.price * guests;// me shiku edhe sa dit eka rezeru * days   
     
-    const newBooking = new Booking({
+    const booking = new Booking({
       user: userId,
       tour: tourId,
       guests: guests,
       totalPrice: totalPrice,
       bookingDate: new Date(),
-      endDate,
-      startDate
     });
 
 

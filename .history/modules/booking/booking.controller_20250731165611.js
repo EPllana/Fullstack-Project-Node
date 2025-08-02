@@ -7,17 +7,16 @@ import Tour from "../tour/tour.model.js"
 
 export const createBooking = async (req, res) => {
   try {
-    const {guests, startDate, endDate}  = req.body;
+    const { tourId, guests } = req.body;
     const userId = req.user._id;  
-    const tourId = req.params.id;
 
  
     const tour = await Tour.findById(tourId);
     if (!tour) {
-      return res.status(404).json({ message: "Tour not founds" });
+      return res.status(404).json({ message: "Tour not found" });
     }
 
-    const totalPrice = tour.price * guests;// me shiku edhe sa dit eka rezeru * days   
+    const totalPrice = tour.price * guests;  
     
     const newBooking = new Booking({
       user: userId,
@@ -25,8 +24,6 @@ export const createBooking = async (req, res) => {
       guests: guests,
       totalPrice: totalPrice,
       bookingDate: new Date(),
-      endDate,
-      startDate
     });
 
 
@@ -38,6 +35,7 @@ export const createBooking = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 ////==============================================================================getAllBookings=====================================================================================================
 export const getAllBookings = async (req, res) => {
@@ -120,6 +118,20 @@ export const updateBookings = async(req,res)=>{
   }
 };
 
+export const updateBooking = async (req,res)=>{
+  try{
+    const bookingId = req.params.id;
+    const {guests,status}=req.body
+
+    const booking = await Booking.findById(bookingId)
+    if(!booking)
+
+    if(guests){
+      const tour = await Tour.findById(booking.tour);
+      if(!)
+    }
+  }
+}
 ////==============================================================================deleteBookings=====================================================================================================
 export const deleteBookings = async(req, res)=>{
   try{
