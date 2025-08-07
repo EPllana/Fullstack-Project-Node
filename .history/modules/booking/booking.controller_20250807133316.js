@@ -12,7 +12,7 @@ export const createBooking = async (req, res) => {
     const { guests, startDate, endDate } = req.body;
     const tour = await Tour.findById(tourId);
     if (!tour) {
-      return res.status(404).json({ messae: "Tour not found" });
+      return res.status(404).json({ messaGe: "Tour not found" });
     }
     const startDateOnly = new Date(startDate.split("T")[0]);
     const endDateOnly = new Date(endDate.split("T")[0]);
@@ -135,4 +135,3 @@ export const deleteBookings = async(req, res)=>{
     res.status(500).json({ message: "Server error" });
   }
 };
-

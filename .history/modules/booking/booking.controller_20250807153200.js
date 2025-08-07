@@ -136,3 +136,4 @@ export const deleteBookings = async(req, res)=>{
   }
 };
 
+export const get
