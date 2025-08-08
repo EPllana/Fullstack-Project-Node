@@ -180,9 +180,10 @@ export const cancelMyBooking = async (req ,res)=>{
     await Booking.save();
     res.status(201).json({ message: "Status updated" });
 
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
 
+
+
+  }catch(error){
+
+  }
+}

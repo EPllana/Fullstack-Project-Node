@@ -50,14 +50,7 @@ export const getAllBookings = async (req, res) => {
 
     let filter = { user: userId, isActive: true }; 
 
-    if (req.user.role === "user") {
-      filter.user = req.user._id;
-      // { isActive: true, user: req.user._id}
-    }
 
-    if (status) {
-      filter.status = status;
-    }
     if (search)  {
       filter.$or = [
         { 'tour.title': { $regex: search, $options: 'i' } },
@@ -143,46 +136,4 @@ export const deleteBookings = async(req, res)=>{
   }
 };
 
-
-export const updateStatus = async (req, res)=>{
-  try{
-    const bookingId = req.params.bookingId;
-    const status = req.body.status;
-    const booking = await Booking.findById(bookingId)
-    if (!booking) {
-      return res.status(404).json({ message: "Tour not found" });
-    }
-    if(status && (status ==="paid" || status ==="canceled")){
-    }else{
-      res.status(400).json({message:"Status is required"});
-    }
-    await Booking.save();
-    res.status(201).json({message:Status Updated})
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
-
-export const cancelMyBooking = async (req ,res)=>{
-  try{
-    const bookingId = req.params.BookingId;
-    const status = req.body.status;
-    const booking = await Booking.findOne({_id:bookingId,user:req.user._id})
-    if(!booking){
-      return res.status(404).json({ message: "Tour not found" });
-    }
-    if(status && status === "canceled"){
-      booking.status=status;
-    }else{
-      res.status(400).json({message:"Status is required"})
-    }
-    await Booking.save();
-    res.status(201).json({ message: "Status updated" });
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
-
+export const deletebooking = async r()

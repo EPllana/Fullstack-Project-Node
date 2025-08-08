@@ -14,13 +14,19 @@ router.get("/",isAuthenticated, getAllBookings)
 
 router.put("/:id",isAuthenticated,authorize, updateBookings)
 
-router.delete("/:bookingId",isAuthenticated, authorize ,deleteBookings)
+router.delete("/:id",isAuthenticated, authorize ,deleteBookings)
 
 router.put("/updateStatus/:bookingId", isAuthenticated,authorize(["user"])updateStatus)
 
 router.put("/cancelMyBooking/:bookingId", isAuthenticated,authorize(["user"])cancelMyBooking)
 
 
+router.delete(
+    "/:bookingId",
+    isAuthnticated,
+    authorize(["admin"]),
+    deleteBooking
+  );
 
 
 export default router;

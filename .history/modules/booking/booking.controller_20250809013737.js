@@ -174,15 +174,10 @@ export const cancelMyBooking = async (req ,res)=>{
     }
     if(status && status === "canceled"){
       booking.status=status;
-    }else{
-      res.status(400).json({message:"Status is required"})
     }
-    await Booking.save();
-    res.status(201).json({ message: "Status updated" });
 
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Server Error" });
+
+  }catch(error){
+
   }
-};
-
+}

@@ -1,5 +1,5 @@
 import express from "express";
-import { createBooking,getAllBookings,updateBookings,deleteBookings,updateStatus,cancelMyBooking} from "./booking.controller.js";
+import { createBooking,getAllBookings,updateBookings,deleteBookings} from "./booking.controller.js";
 import { isAuthenticated , authorize} from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
@@ -14,12 +14,9 @@ router.get("/",isAuthenticated, getAllBookings)
 
 router.put("/:id",isAuthenticated,authorize, updateBookings)
 
-router.delete("/:bookingId",isAuthenticated, authorize ,deleteBookings)
+router.delete("/:id",isAuthenticated, authorize ,deleteBookings)
 
-router.put("/updateStatus/:bookingId", isAuthenticated,authorize(["user"])updateStatus)
-
-router.put("/cancelMyBooking/:bookingId", isAuthenticated,authorize(["user"])cancelMyBooking)
-
+router.put('')
 
 
 

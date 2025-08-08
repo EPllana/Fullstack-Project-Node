@@ -21,6 +21,7 @@ router.put("/updateStatus/:bookingId", isAuthenticated,authorize(["user"])update
 router.put("/cancelMyBooking/:bookingId", isAuthenticated,authorize(["user"])cancelMyBooking)
 
 
+router.delete( "/:bookingId", isAuthenticated, authorize(["admin"]), deleteBooking);
 
 
 export default router;
