@@ -164,11 +164,13 @@ export const updateStatus = async (req, res) => {
     const bookingId = req.params.bookingId;
     const status = req.body.status;
 
+    // Gjej rezervimin me bookingId
     const booking = await Booking.findById(bookingId);
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }
 
+    // Kontrollo statusin e dërguar dhe përditësoje
     if (status && (status === "paid" || status === "canceled" || status === "completed")) {
       booking.status = status;
     } else {
@@ -176,6 +178,7 @@ export const updateStatus = async (req, res) => {
     }
     await booking.save();
 
+    // Kthe një përgjigje të suksesshme
     return res.status(200).json({ message: "Status updated successfully" });
 
   } catch (error) {

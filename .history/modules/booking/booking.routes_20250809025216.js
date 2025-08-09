@@ -18,6 +18,7 @@ router.delete("/:bookingId", isAuthenticated, authorize(["user"]), deleteBooking
 
 router.put("/updateStatus/:bookingId", isAuthenticated, authorize(["admin","user"]), updateStatus);
 
+// Cancel a booking for the authenticated user
 router.put("/cancelMyBooking/:bookingId", isAuthenticated, authorize(["user"]), cancelMyBooking);
 
 

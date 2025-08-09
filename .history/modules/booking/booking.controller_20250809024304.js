@@ -159,32 +159,25 @@ export const deleteBookings = async(req, res)=>{
 };
 
 
-export const updateStatus = async (req, res) => {
-  try {
+export const updateStatus = async (req, res)=>{
+  try{
     const bookingId = req.params.bookingId;
     const status = req.body.status;
-
-    const booking = await Booking.findById(bookingId);
+    const booking = await Booking.findById(bookingId)
     if (!booking) {
-      return res.status(404).json({ message: "Booking not found" });
+      return res.status(404).json({ message: "Tour not found" });
     }
-
-    if (status && (status === "paid" || status === "canceled" || status === "completed")) {
-      booking.status = status;
-    } else {
-      return res.status(400).json({ message: "Invalid status" }); 
+    if(status && (status ==="paid" || status ==="canceled")){
+    }else{
+      res.status(400).json({message:"Status is required"});
     }
     await booking.save();
-
-    return res.status(200).json({ message: "Status updated successfully" });
-
+    res.status(201).json({message:"Status Updated"})
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: "Server Error" });
   }
 };
-
-
 
 export const cancelMyBooking = async (req ,res)=>{
   try{

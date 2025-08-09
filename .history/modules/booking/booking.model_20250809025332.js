@@ -33,7 +33,7 @@ const bookingSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["pending", "paid","confirmed", "completed", "canceled"],
+        enum: ["pending", "paid"confirmed", "completed", "canceled"],
         default: "pending",  
     },
     startDate:{// kta me bo nshpi me i kalkulu per sa dit eka rezervu tamon numer 

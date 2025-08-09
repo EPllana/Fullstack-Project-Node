@@ -10,18 +10,12 @@ export const createBooking = async (req, res) => {
     const tourId = req.params.tourId;
     const userId = req.user._id;
     const { guests, startDate, endDate } = req.body;
-
-    if (!startDate || !endDate) {
-      return res.status(400).json({ message: "Start date and end date are required" });
-    }
-
-    const startDateOnly = new Date(startDate.split("T")[0]);
-    const endDateOnly = new Date(endDate.split("T")[0]);
-
     const tour = await Tour.findById(tourId);
     if (!tour) {
-      return res.status(404).json({ message: "Tour not found" });
+      return res.status(404).json({ messae: "Tour not found" });
     }
+    const startDateOnly = new Date(startDate.split("T")[0]);
+    const endDateOnly = new Date(endDate.split("T")[0]);
 
     const diffTime = endDateOnly - startDateOnly;
     const diffDays = diffTime / (1000 * 60 * 60 * 24) + 1;
@@ -36,16 +30,14 @@ export const createBooking = async (req, res) => {
       endDate,
     });
     await booking.save();
-
     res.status(201).json({
-      message: "Booking created successfully",
+      message: "booking created successfully",
     });
   } catch (error) {
     console.log(error, "error");
     res.status(500).json({ message: "Server Error", error });
   }
 };
-
 ////==============================================================================getAllBookings=====================================================================================================
 export const getAllBookings = async (req, res) => {
   try {
@@ -62,7 +54,8 @@ export const getAllBookings = async (req, res) => {
       filter.user = req.user._id;
     }
 
-    const status = req.query.status;  
+    const status = req.query.status;  // Ose req.body.status nëse po përdorni `POST` ose `PUT`
+
     if (status) {
       filter.status = status;
     }
@@ -79,7 +72,7 @@ export const getAllBookings = async (req, res) => {
       .populate('user', 'name email')
       .skip(skip)
       .limit(limit)
-      .sort({ createdAt: -1 });
+      .sort({ bookingDate: -1 });
 
     if (bookings.length === 0) {
       return res.status(404).json({ message: "No bookings found" });
@@ -159,32 +152,25 @@ export const deleteBookings = async(req, res)=>{
 };
 
 
-export const updateStatus = async (req, res) => {
-  try {
+export const updateStatus = async (req, res)=>{
+  try{
     const bookingId = req.params.bookingId;
     const status = req.body.status;
-
-    const booking = await Booking.findById(bookingId);
+    const booking = await Booking.findById(bookingId)
     if (!booking) {
-      return res.status(404).json({ message: "Booking not found" });
+      return res.status(404).json({ message: "Tour not found" });
     }
-
-    if (status && (status === "paid" || status === "canceled" || status === "completed")) {
-      booking.status = status;
-    } else {
-      return res.status(400).json({ message: "Invalid status" }); 
+    if(status && (status ==="paid" || status ==="canceled")){
+    }else{
+      res.status(400).json({message:"Status is required"});
     }
-    await booking.save();
-
-    return res.status(200).json({ message: "Status updated successfully" });
-
+    await Booking.save();
+    res.status(201).json({message:"Status Updated"})
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: "Server Error" });
   }
 };
-
-
 
 export const cancelMyBooking = async (req ,res)=>{
   try{
@@ -199,7 +185,7 @@ export const cancelMyBooking = async (req ,res)=>{
     }else{
       res.status(400).json({message:"Status is required"})
     }
-    await booking.save();
+    await Booking.save();
     res.status(201).json({ message: "Status updated" });
 
   } catch (error) {

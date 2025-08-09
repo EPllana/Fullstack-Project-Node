@@ -164,26 +164,30 @@ export const updateStatus = async (req, res) => {
     const bookingId = req.params.bookingId;
     const status = req.body.status;
 
+    console.log("Status i dërguar:", status); // Kontrolloni çfarë po dërgohet
+
     const booking = await Booking.findById(bookingId);
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    if (status && (status === "paid" || status === "canceled" || status === "completed")) {
-      booking.status = status;
-    } else {
-      return res.status(400).json({ message: "Invalid status" }); 
+    if (!status) {
+      return res.status(400).json({ message: "Status is required" });
     }
+
+    // Përditëso statusin dhe ruaj rezervimin
+    booking.status = status;
     await booking.save();
 
+    // Sigurohuni që kthehet vetëm një përgjigje
     return res.status(200).json({ message: "Status updated successfully" });
 
   } catch (error) {
     console.log(error);
+    // Sigurohuni që nuk ka një tjetër përgjigje pas kësaj
     return res.status(500).json({ message: "Server Error" });
   }
 };
-
 
 
 export const cancelMyBooking = async (req ,res)=>{
