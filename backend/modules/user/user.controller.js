@@ -273,3 +273,4 @@ export const verifyEmail = async (req, res) => {
     res.status(400).json({ message: "Token i pavlefshëm ose i skaduar" });
   }
 };
+
