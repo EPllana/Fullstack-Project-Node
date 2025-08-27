@@ -15,7 +15,7 @@ app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(cors());// e lojm yllin mi jep qasje krejt 
+app.use(cors("*"));// e lojm yllin mi jep qasje krejt 
 
 app.use("/upload", express.static(path.join(__dirname, "upload")));
 
