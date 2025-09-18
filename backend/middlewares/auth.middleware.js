@@ -32,7 +32,7 @@ export const authorize = (roles)=> {
       }
       if(roles && !roles.includes(req.user.role)) // kjo includes perdore peer me shiku rolet e userit  ? nese nuk eka qat rol me kthy diqka 
       {
-         return res.status(403).json({message:"Acces Denied"})//403 kur ki problemem me user role 
+         return res.status(401).json({message:"Acces Denied"})//403 kur ki problemem me user role 
       }
       next();
    }
